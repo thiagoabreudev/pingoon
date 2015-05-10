@@ -13,6 +13,8 @@
     <script type="text/javascript" src="js/acesscamera.js"></script>
     <script type="text/javascript" src="js/client.js"></script>
     <script type="text/javascript" src="js/mapa.js"></script>
+    <script type="text/javascript" src="js/banco.js"></script>
+    <script type="text/javascript" src="js/ocorrencia.js"></script>
     <style>
         html, #formulario, #container-mapa {
             width: 100%;
@@ -43,7 +45,8 @@
     </div>
     <div data-role="formulario" class="ui-content" id="formulario">
         <form name="form_ocorrencia" action="http://192.168.0.103:8081/criaocorrencia"
-              enctype="application/x-www-form-urlencoded" method="POST">
+              enctype="application/x-www-form-urlencoded" method="POST"
+              id="ocorrencia">
             <fieldset>
                 <label for="titulo" class="ui-content">Título:</label>
                 <input type="text" name="ocorrencia_titulo" id="titulo"
@@ -68,7 +71,8 @@
                 <!--</iframe>-->
                 <!--</div>-->
             </fieldset>
-            <input type="submit" data-inline="true" value="Enviar">
+            <input type="submit" data-inline="true" value="Enviar"
+                    onclick="insere_ocorrencia();">
             <!--onclick="client();">-->
         </form>
         <button data-role="button" data-icon="plus" data-iconpos="button"
