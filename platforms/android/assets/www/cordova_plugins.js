@@ -104,6 +104,13 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/io.litehelpers.cordova.sqlite/www/SQLitePlugin.js",
+        "id": "io.litehelpers.cordova.sqlite.SQLitePlugin",
+        "clobbers": [
+            "SQLitePlugin"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.file/www/DirectoryEntry.js",
         "id": "org.apache.cordova.file.DirectoryEntry",
         "clobbers": [
@@ -260,6 +267,7 @@ module.exports.metadata =
     "org.apache.cordova.media": "0.2.16",
     "org.apache.cordova.console": "0.2.13",
     "org.apache.cordova.geolocation": "0.3.12",
+    "io.litehelpers.cordova.sqlite": "0.7.8-dev",
     "org.apache.cordova.file": "1.3.3"
 }
 // BOTTOM OF METADATA

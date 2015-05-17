@@ -10,12 +10,16 @@ function onDeviceReady() {
 }
 
 function mapaSucesso(posicao) {
+    var longitude = document.getElementById('ocorrencia_longitude');
+    var latitude  = document.getElementById('ocorrencia_latitude');
+    longitude.value = posicao.coords.latitude;
+    latitude.value = posicao.coords.longitude;
     var element = document.getElementById('iframe-mapa');
-    var latitude = posicao.coords.latitude;
-    var longitude = posicao.coords.longitude;
+//    var latitude = posicao.coords.latitude;
+//    var longitude = posicao.coords.longitude;
     var link_mapa = "https://www.google.com/maps/embed/v1/view" +
         "?key=AIzaSyDVGKxIFqpd4Ov0UdiO_3vtwMWWAorJ_XM" +
-        "&center=" + latitude + "," + longitude + "&zoom=18";
+        "&center=" + latitude.value + "," + longitude.value + "&zoom=18";
 //        "&maptype=satellite";
     element.src = link_mapa;
 }

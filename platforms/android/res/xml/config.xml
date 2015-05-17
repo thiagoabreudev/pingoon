@@ -21,6 +21,9 @@
     <feature name="Media">
         <param name="android-package" value="org.apache.cordova.media.AudioHandler" />
     </feature>
+    <feature name="SQLitePlugin">
+        <param name="android-package" value="io.liteglue.SQLitePlugin" />
+    </feature>
     <allow-intent href="market:*" />
     <icon src="res/android/src/img/icon.png" />
     <name>pingoon</name>

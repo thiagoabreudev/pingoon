@@ -50,3 +50,5 @@ var app = {
 };
 
 app.initialize();
+abrirDB();
+recuperarRegistros();

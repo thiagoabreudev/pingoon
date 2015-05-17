@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var db;
 var app = {
     // Application Constructor
     initialize: function() {
@@ -51,3 +50,5 @@ var app = {
 };
 
 app.initialize();
+abrirDB();
+recuperarRegistros();

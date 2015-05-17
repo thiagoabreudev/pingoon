@@ -31,6 +31,10 @@
                         {
                             "xml": "<feature name=\"Media\"><param name=\"android-package\" value=\"org.apache.cordova.media.AudioHandler\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"SQLitePlugin\"><param name=\"android-package\" value=\"io.liteglue.SQLitePlugin\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -92,6 +96,9 @@
             "PACKAGE_NAME": "com.pi.pingoon"
         },
         "org.apache.cordova.geolocation": {
+            "PACKAGE_NAME": "com.pi.pingoon"
+        },
+        "io.litehelpers.cordova.sqlite": {
             "PACKAGE_NAME": "com.pi.pingoon"
         }
     },

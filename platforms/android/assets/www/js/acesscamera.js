@@ -21,7 +21,6 @@ function fotoFalha(msg){
 }
 
 function capturarFoto(){
-    alert("entrei no capturar foto");
     navigator.camera.getPicture(fotoSucesso, fotoFalha, { quality: 50,
         destinationType: destinationType.DATA_URL});
 }
