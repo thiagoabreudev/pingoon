@@ -24,6 +24,8 @@ function mapaSucesso(posicao) {
     element.src = link_mapa;
 }
 
+
+
 function mapaErro(msg) {
     alert('code: ' + error.code + '\n' +
             'message: ' + error.message + '\n'

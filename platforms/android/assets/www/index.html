@@ -24,23 +24,24 @@
             </div>
         </div>
         <div data-role="main" class="ui-content">
+            <button onclick="recuperaTotais();" name="atualizar">Atualizar</button>
             <div data-role="contet">
                 <ul data-role="listview" data-inset="true">
                     <li data-role="list-divider">Problemas encontrados</li>
                     <li><a href="#">
-                        Em esboço<span class="ui-li-count">15</span>
+                        Em esboço<span class="ui-li-count" id="esboco"></span>
                     </a></li>
                     <li><a href="#">
-                        Visualizado<span class="ui-li-count">12</span>
+                        Visualizado<span class="ui-li-count" id="visualizado"></span>
                     </a></li>
                     <li><a href="#">
-                        Atendimento<span class="ui-li-count">12</span>
+                        Atendimento<span class="ui-li-count" id="atendimento"></span>
                     </a></li>
                     <li><a href="#">
-                        Corrigido<span class="ui-li-count">12</span>
+                        Corrigido<span class="ui-li-count" id="corrigido"></span>
                     </a></li>
                     <li><a href="#">
-                        Cancelado<span class="ui-li-count">12</span>
+                        Cancelado<span class="ui-li-count" id="cancelado"></span>
                     </a></li>
                 </ul>
             </div>
