@@ -11,7 +11,6 @@
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/acesscamera.js"></script>
-    <script type="text/javascript" src="js/mapa.js"></script>
     <script type="text/javascript" src="js/persistencia.js"></script>
     <script type="text/javascript"
             src="http://maps.google.com/maps/api/js?sensor=true&language=pt-BR"></script>
@@ -19,49 +18,58 @@
 <body>
 <div data-role="page" id="novo">
     <div data-role="header">
-        <img src="img/logo.png">
-
+        <p align="center">
+            <img src="img/logo.png">
+        <p>
         <div data-role="navbar" id="menu">
             <ul>
-                <li><a href="index.html" data-role="button" data-icon="home">Meus problemas</a></li>
-                <li><a href="formulario.html" data-role="button" data-icon="plus">Novo</a></li>
+                <li><a href="index.html" data-role="button" data-icon=""><img src ="img/icone_home.png" /></a></li>
+                <li><a href="formulario.html" data-role="button" data-icon=""><img src ="img/icone_novo.png" /></a></li>
             </ul>
         </div>
     </div>
+
+    <button data-role="button" data-iconpos="button" id="icone_camera"
+            onclick="capturarFoto();"> <img src ="img/icone_camera.png" />
+    </button>
+    <button data-role="button" id="icone_gravar" onclick="enviar();">
+        <img src ="img/icone_gravar.png" />
+    </button><br><br>
+
+
     <div data-role="formulario" class="ui-content" id="formulario">
         <form name="form_ocorrencia" action="#" id="ocorrencia">
             <fieldset>
-                <label for="titulo" class="ui-content">Título:</label>
+
                 <input type="text" name="ocorrencia_titulo" id="titulo"
                        placeholder="Informe um título para o problema"><br/>
-                <label for="descricao" class="ui-content">Decrição:</label>
-                <textarea type="text" name="ocorrencia_descricao" id="descricao"
-                          placeholder="Informe uma  descricao para o problema"
-                          data-role="descricao">
-                </textarea>
-                <input type="image" id="imagem" src="" name="ocorrencia_foto"
-                       style="width:200px;height:200px;"
-                       alt="Submit Form">
+
+                <textarea name="ocorrencia_descricao" id="descricao"
+                          placeholder="Informe uma descrição para o problema"
+                          data-role="descricao" ></textarea>
+                <center>
+                    <input type="image" id="imagem" src="" name="ocorrencia_foto"
+                           style="width:200px;height:200px;"
+                           alt="imagem">
+                </center>
                 <textarea name="ocorrencia_foto_text" id="input_foto" style="display: none"></textarea>
                 <br/>
-                <label form="ocorrencia_latitude" class="ui-content">Latitude: </label>
-                <input type="text" id="ocorrencia_latitude" name="ocorrencia_latitude">
-                <label form="ocorrencia_latitude" class="ui-content">Longitude: </label>
-                <input type="text" id="ocorrencia_longitude" name="ocorrencia_longitude">
+
+                <label form="ocorrencia_latitude" class="ui-content"></label>
+                <input type="hidden" id="ocorrencia_latitude" name="ocorrencia_latitude">
+                <label form="ocorrencia_latitude" class="ui-content"></label>
+                <input type="hidden" id="ocorrencia_longitude" name="ocorrencia_longitude">
+
             </fieldset>
-            <!--<input type="submit" data-inline="true" value="Enviar">-->
         </form>
-        <button data-role="button" data-icon="plus" data-iconpos="button"
-                onclick="capturarFoto();"> Foto
-        </button>
-        <button data-role="button" onclick="enviar();">
-            Enviar
-        </button>
+
+
     </div>
     <div data-role="footer">
         <h1>&copy;Pingoon</h1>
     </div>
 </div>
+<script type="text/javascript" src="js/mapa.js"></script>
 </body>
 </html>
 

@@ -1,57 +1,82 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="css/estilo.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-        <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/acesscamera.js"></script>
-        <script type="text/javascript" src="js/mapa.js"></script>
-        <title>Pingoon</title>
-    </head>
-    <body>
-    <div data-role="page" id="principal">
-        <div data-role="header">
-            <img src="img/logo.png" class="imageHeader">
-            <div data-role="navbar">
-                <ul>
-                    <li><a href="index.html" data-role="button" data-icon="home">Meus problemas</a></li>
-                    <li><a href="formulario.html" data-role="button" data-icon="plus">Novo</a></li>
-                </ul>
-            </div>
-        </div>
-        <div data-role="main" class="ui-content">
-            <button onclick="recuperaTotais();" name="atualizar">Atualizar</button>
-            <div data-role="contet">
-                <ul data-role="listview" data-inset="true">
-                    <li data-role="list-divider">Problemas encontrados</li>
-                    <li><a href="#">
-                        Em esboço<span class="ui-li-count" id="esboco"></span>
-                    </a></li>
-                    <li><a href="#">
-                        Visualizado<span class="ui-li-count" id="visualizado"></span>
-                    </a></li>
-                    <li><a href="#">
-                        Atendimento<span class="ui-li-count" id="atendimento"></span>
-                    </a></li>
-                    <li><a href="#">
-                        Corrigido<span class="ui-li-count" id="corrigido"></span>
-                    </a></li>
-                    <li><a href="#">
-                        Cancelado<span class="ui-li-count" id="cancelado"></span>
-                    </a></li>
-                </ul>
-            </div>
-        </div>
-        <div data-role="footer">
-            <h1>&copy;Pingon</h1>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/estilo.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/acesscamera.js"></script>
+    <script type="text/javascript" src="js/mapa.js"></script>
+    <script type="text/javascript" src="js/persistencia.js"></script>
+    <title>Pingoon</title>
+</head>
+<body>
+<div data-role="page" id="principal">
+    <div data-role="header">
+        <p align="center">
+            <img src="img/logo.png">
+        <p>
+        <div data-role="navbar">
+            <ul>
+                <li><a href="index.html" data-role="button" data-icon=""><img src ="img/icone_home.png" /></a></li>
+                <li><a href="formulario.html" data-role="button" data-icon=""><img src ="img/icone_novo.png" /></a></li>
+            </ul>
         </div>
     </div>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/persistencia.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-    </body>
+    <div data-role="main" class="ui-content">
+        <button onclick="recuperaTotais();" name="atualizar"
+                data-icon="refresh" data-inline="true">Atualizar
+        </button>
+        <div data-role="collapsible-set">
+            <ul data-role="listview" data-inset="true">
+                <li data-role="list-divider">Problemas encontrados</li>
+            </ul>
+            <div data-role="collapsible">
+                <h3 onclick="mostraRegistros('1');">Em esboço<span class="ui-li-count"
+                                                                   id="esboco">0</span></h3>
+
+                <div id="1">
+                </div>
+            </div>
+            <div data-role="collapsible">
+                <h3 onclick="mostraRegistros('2');">Visualizado<span class="ui-li-count"
+                                                                     id="visualizado">0</span></h3>
+
+                <div id="2">
+                </div>
+            </div>
+            <div data-role="collapsible">
+                <h3 onclick="mostraRegistros('3');">Atendimento<span class="ui-li-count"
+                                                                     id="atendimento">0</span></h3>
+
+                <div id="3">
+                </div>
+            </div>
+            <div data-role="collapsible">
+                <h3 onclick="mostraRegistros('4');">Corrigido<span class="ui-li-count"
+                                                                   id="corrigido">0</span></h3>
+
+                <div id="4">
+                </div>
+            </div>
+            <div data-role="collapsible">
+                <h3 onclick="mostraRegistros('5');">Cancelado<span class="ui-li-count"
+                                                                   id="cancelado">0</span></h3>
+
+                <div id="5">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div data-role="footer">
+        <h1>&copy;Pingon</h1>
+    </div>
+</div>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/persistencia.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+</body>
 </html>

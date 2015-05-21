@@ -3,11 +3,13 @@
  */
 
 var db;
+var host = 'http://192.168.0.105:8081/';
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
     db = window.openDatabase("pingoon", "1.0", "Pingoon", 200000);
     db.transaction(criaDB, erroDB, sucessoDB);
+    totaisRegistros();
 }
 
 function criaDB(tx) {
@@ -44,8 +46,7 @@ function inserirDados(tx) {
         "'" + window.ocorrencia_latitude + "'," +
         "'" + window.ocorrencia_longitude + "'," +
             + window.ocorrencia_id + "," +
-        "'" + 'E' + "')";
-    alert(sql);
+        "'" + '1' + "')";
     tx.executeSql(sql);
 }
 
@@ -63,16 +64,107 @@ function recuperaRegistro(tx) {
 }
 
 function registroSucesso(tx, results) {
+    var pesquisaOcoIds = [];
     var tamanho = results.rows.length;
     for (var i = 0; i < tamanho; i++) {
-        alert(results.rows.item(i).ocorrencia_id);
+        pesquisaOcoIds[i] = results.rows.item(i).ocorrencia_id;
+//        alert(results.rows.item(i).ocorrencia_id);
     }
+    recuperaServidor(pesquisaOcoIds);
 }
 
+
+// Parte referente a comunicacao com o webservice
+
+
+function recuperaServidor(ids) {
+    var url = host + "pesquisa";
+    url += "?ocorrencia_ids=" + ids + ';';
+    var conexao = new XMLHttpRequest();
+    conexao.open('GET', url, false);
+    conexao.send();
+    if (conexao.status == 200 && conexao.responseText != '') {
+        var ret = jQuery.parseJSON(conexao.responseText);
+        alert(conexao.responseText);
+        var tamanho = ret.dados.length;
+        window.esboco = 0;
+        window.visualizado = 0;
+        window.atendimento = 0;
+        window.corrigido = 0;
+        window.cancelado = 0;
+        for (var i = 0; i < tamanho; i++){
+            window.ocorrencia_id = ret.dados[i].id;
+            window.status = ret.dados[i].state;
+            db.transaction(atualizarStatusRegistros, erroDB);
+        }
+        totaisRegistros();
+    }
+}
+function atualizarStatusRegistros(tx){
+    alert(window.status + " " + window.ocorrencia_id);
+    tx.executeSql("UPDATE ocorrencia SET status ='" + window.status + "'WHERE ocorrencia_id = " + window.ocorrencia_id, [], sucesso, erroDB);
+}
+
+function totaisRegistros(){
+    db.transaction(recuperaTotaisRegistros, erroDB);
+}
+
+function recuperaTotaisRegistros(tx){
+    tx.executeSql('SELECT status, count(id) as total from ocorrencia GROUP BY status', [], registrosTotaisSucesso,
+        erroDB);
+}
+
+function registrosTotaisSucesso(tx, results){
+    var tamanho = results.rows.length;
+    window.esboco = "0";
+    window.visualizado = "0";
+    window.atendimento = "0";
+    window.corrigido = "0";
+    window.cancelado = "0";
+    for (var i = 0; i < tamanho; i ++){
+        window.status = results.rows.item(i).status;
+        if (window.status == '1'){
+            window.esboco = results.rows.item(i).total;
+        }else if (window.status == '2'){
+            window.visualizado = results.rows.item(i).total;
+        }else if (window.status == '3'){
+            window.atendimento = results.rows.item(i).total;
+        }else if (window.status == '4'){
+            window.corrigido = results.rows.item(i).total;
+        }else if (window.status == '5'){
+            window.cancelado = results.rows.item(i).total;
+        }
+    }
+    document.getElementById('esboco').innerHTML = window.esboco.toString();
+    document.getElementById('visualizado').innerHTML = window.visualizado.toString();
+    document.getElementById('atendimento').innerHTML = window.atendimento.toString();
+    document.getElementById('corrigido').innerHTML = window.corrigido.toString();
+    document.getElementById('cancelado').innerHTML = window.cancelado.toString();
+}
+
+function mostraRegistros(status){
+    window.status = status;
+    db.transaction(buscaOcorrencias, erroDB);
+}
+
+function buscaOcorrencias(tx){
+    tx.executeSql("SELECT ocorrencia_id FROM ocorrencia where status = '" + window.status +"'",
+        [], buscaOcorrenciasSucesso, erroDB);
+}
+
+function buscaOcorrenciasSucesso(tx, results){
+    var tamanho = results.rows.length;
+    var ocorrencia_html = "";
+    for (var i = 0; i < tamanho; i++){
+        ocorrencia_html += "<p>Número: " +results.rows.item(i).ocorrencia_id + "</p>";
+    }
+
+    document.getElementById(window.status).innerHTML = ocorrencia_html;
+}
 function enviar() {
 //  Pegando os dados do formulario para enviar para o servidor
     var cont = 0;
-    var url = "http://192.168.0.105:8081/criaocorrencia?";
+    var url = host + "criaocorrencia?";
     window.ocorrencia_titulo = document.getElementById('titulo').value;
     window.ocorrencia_descricao = document.getElementById('descricao').value;
     window.ocorrencia_foto = document.getElementById('input_foto').value;
@@ -100,4 +192,8 @@ function enviar() {
             window.ocorrencia_id = resposta.id;
         }
     };
+}
+
+function sucesso(){
+
 }

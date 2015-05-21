@@ -14,20 +14,22 @@ function mapaSucesso(posicao) {
     var latitude  = document.getElementById('ocorrencia_latitude');
     longitude.value = posicao.coords.latitude;
     latitude.value = posicao.coords.longitude;
-    var element = document.getElementById('iframe-mapa');
-//    var latitude = posicao.coords.latitude;
-//    var longitude = posicao.coords.longitude;
-    var link_mapa = "https://www.google.com/maps/embed/v1/view" +
-        "?key=AIzaSyDVGKxIFqpd4Ov0UdiO_3vtwMWWAorJ_XM" +
-        "&center=" + latitude.value + "," + longitude.value + "&zoom=18";
-//        "&maptype=satellite";
-    element.src = link_mapa;
+    window.vLatitude = posicao.coords.latitude;
+    window.vLongitude = posicao.coords.longitude;
 }
-
-
 
 function mapaErro(msg) {
     alert('code: ' + error.code + '\n' +
             'message: ' + error.message + '\n'
     );
 }
+
+function mostrarMapa(){
+    var mapa_foto = document.getElementById('mapa_foto');
+    mapa_foto.src = "https://maps.googleapis.com/maps/api/staticmap?"+
+        "center="+window.vLatitude+","+
+        window.vLongitude+"&markers="+window.vLatitude+
+        "," + window.vLongitude+"&zoom=16&size=280x280&maptype=roadmap";
+}
+
+mostrarMapa();
