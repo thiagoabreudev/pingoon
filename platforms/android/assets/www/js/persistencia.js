@@ -3,7 +3,9 @@
  */
 
 var db;
-var host = 'http://192.168.0.105:8081/';
+//var host = '192.168.43.158:8081/';
+var host = 'http://52.25.81.7:8081/';
+//var host = 'http://192.168.0.105:8081/';
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
@@ -74,9 +76,7 @@ function registroSucesso(tx, results) {
 }
 
 
-// Parte referente a comunicacao com o webservice
-
-
+// Parte referente a comunicacao com o webservice e pedidos dos status das ocorrencias
 function recuperaServidor(ids) {
     var url = host + "pesquisa";
     url += "?ocorrencia_ids=" + ids + ';';
@@ -85,7 +85,6 @@ function recuperaServidor(ids) {
     conexao.send();
     if (conexao.status == 200 && conexao.responseText != '') {
         var ret = jQuery.parseJSON(conexao.responseText);
-        alert(conexao.responseText);
         var tamanho = ret.dados.length;
         window.esboco = 0;
         window.visualizado = 0;
@@ -100,8 +99,8 @@ function recuperaServidor(ids) {
         totaisRegistros();
     }
 }
+
 function atualizarStatusRegistros(tx){
-    alert(window.status + " " + window.ocorrencia_id);
     tx.executeSql("UPDATE ocorrencia SET status ='" + window.status + "'WHERE ocorrencia_id = " + window.ocorrencia_id, [], sucesso, erroDB);
 }
 
@@ -110,11 +109,13 @@ function totaisRegistros(){
 }
 
 function recuperaTotaisRegistros(tx){
-    tx.executeSql('SELECT status, count(id) as total from ocorrencia GROUP BY status', [], registrosTotaisSucesso,
+    tx.executeSql('SELECT status, count(id) as total from ocorrencia GROUP BY status', [],
+        registrosTotaisSucesso,
         erroDB);
 }
 
 function registrosTotaisSucesso(tx, results){
+//    T=(On)
     var tamanho = results.rows.length;
     window.esboco = "0";
     window.visualizado = "0";
