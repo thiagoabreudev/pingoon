@@ -6,6 +6,7 @@ var db;
 //var host = '192.168.43.158:8081/';
 var host = 'http://52.25.81.7:8081/';
 //var host = 'http://192.168.0.105:8081/';
+//var host = 'http://192.168.2.2:8081/'; //Roteador pingoon
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
@@ -15,6 +16,7 @@ function onDeviceReady() {
 }
 
 function criaDB(tx) {
+//    tx.executeSql('DROP TABLE ocorrencia');
     tx.executeSql('CREATE TABLE IF NOT EXISTS ocorrencia(id ' +
         'INTEGER PRIMARY KEY AUTOINCREMENT, ' +
         'ocorrencia_titulo varchar(200), ' +
@@ -46,8 +48,7 @@ function inserirDados(tx) {
         "'" + window.ocorrencia_descricao + "'," +
         "'" + window.ocorrencia_foto + "'," +
         "'" + window.ocorrencia_latitude + "'," +
-        "'" + window.ocorrencia_longitude + "'," +
-            + window.ocorrencia_id + "," +
+        "'" + window.ocorrencia_longitude + "'," + +window.ocorrencia_id + "," +
         "'" + '1' + "')";
     tx.executeSql(sql);
 }
@@ -57,7 +58,7 @@ function sucessoSalvar() {
     window.location = "index.html";
 }
 
-function recuperaTotais(){
+function recuperaTotais() {
     db.transaction(recuperaRegistro, erroDB);
 }
 
@@ -84,37 +85,38 @@ function recuperaServidor(ids) {
     conexao.open('GET', url, false);
     conexao.send();
     if (conexao.status == 200 && conexao.responseText != '') {
-        var ret = jQuery.parseJSON(conexao.responseText);
-        var tamanho = ret.dados.length;
+        window.ret = jQuery.parseJSON(conexao.responseText);
+        window.tamanho = ret.dados.length;
+        window.ocorrencia_update_id = false;
+        window.status_updade = false;
         window.esboco = 0;
         window.visualizado = 0;
         window.atendimento = 0;
         window.corrigido = 0;
         window.cancelado = 0;
-        for (var i = 0; i < tamanho; i++){
-            window.ocorrencia_id = ret.dados[i].id;
-            window.status = ret.dados[i].state;
-            db.transaction(atualizarStatusRegistros, erroDB);
-        }
-        totaisRegistros();
+        db.transaction(atualizarStatusRegistros, erroDB);
     }
 }
 
-function atualizarStatusRegistros(tx){
-    tx.executeSql("UPDATE ocorrencia SET status ='" + window.status + "'WHERE ocorrencia_id = " + window.ocorrencia_id, [], sucesso, erroDB);
+function atualizarStatusRegistros(tx) {
+    for (var i = 0; i < tamanho; i++) {
+        sql = "UPDATE ocorrencia SET status ='" + ret.dados[i].state + "' WHERE ocorrencia_id = " + ret.dados[i].id;
+        tx.executeSql(sql, [], sucesso, erroDB);
+    }
+    totaisRegistros();
 }
 
-function totaisRegistros(){
+function totaisRegistros() {
     db.transaction(recuperaTotaisRegistros, erroDB);
 }
 
-function recuperaTotaisRegistros(tx){
-    tx.executeSql('SELECT status, count(id) as total from ocorrencia GROUP BY status', [],
+function recuperaTotaisRegistros(tx) {
+    tx.executeSql('SELECT status, count(id) AS total FROM ocorrencia GROUP BY status', [],
         registrosTotaisSucesso,
         erroDB);
 }
 
-function registrosTotaisSucesso(tx, results){
+function registrosTotaisSucesso(tx, results) {
 //    T=(On)
     var tamanho = results.rows.length;
     window.esboco = "0";
@@ -122,17 +124,17 @@ function registrosTotaisSucesso(tx, results){
     window.atendimento = "0";
     window.corrigido = "0";
     window.cancelado = "0";
-    for (var i = 0; i < tamanho; i ++){
+    for (var i = 0; i < tamanho; i++) {
         window.status = results.rows.item(i).status;
-        if (window.status == '1'){
+        if (window.status == '1') {
             window.esboco = results.rows.item(i).total;
-        }else if (window.status == '2'){
+        } else if (window.status == '2') {
             window.visualizado = results.rows.item(i).total;
-        }else if (window.status == '3'){
+        } else if (window.status == '3') {
             window.atendimento = results.rows.item(i).total;
-        }else if (window.status == '4'){
+        } else if (window.status == '4') {
             window.corrigido = results.rows.item(i).total;
-        }else if (window.status == '5'){
+        } else if (window.status == '5') {
             window.cancelado = results.rows.item(i).total;
         }
     }
@@ -143,27 +145,31 @@ function registrosTotaisSucesso(tx, results){
     document.getElementById('cancelado').innerHTML = window.cancelado.toString();
 }
 
-function mostraRegistros(status){
+function mostraRegistros(status) {
     window.status = status;
     db.transaction(buscaOcorrencias, erroDB);
 }
 
-function buscaOcorrencias(tx){
-    tx.executeSql("SELECT ocorrencia_id FROM ocorrencia where status = '" + window.status +"'",
+function buscaOcorrencias(tx) {
+    tx.executeSql("SELECT ocorrencia_id FROM ocorrencia where status = '" + window.status + "'",
         [], buscaOcorrenciasSucesso, erroDB);
 }
 
-function buscaOcorrenciasSucesso(tx, results){
+function buscaOcorrenciasSucesso(tx, results) {
     var tamanho = results.rows.length;
     var ocorrencia_html = "";
-    for (var i = 0; i < tamanho; i++){
-        ocorrencia_html += "<p>Número: " +results.rows.item(i).ocorrencia_id + "</p>";
+    for (var i = 0; i < tamanho; i++) {
+        ocorrencia_html += "<p>Número: " + results.rows.item(i).ocorrencia_id + "</p>";
     }
 
     document.getElementById(window.status).innerHTML = ocorrencia_html;
 }
 function enviar() {
 //  Pegando os dados do formulario para enviar para o servidor
+    var button_enviar = document.getElementById('icone_gravar');
+    button_enviar.style.display = 'none';
+    var button_camera = document.getElementById('icone_camera');
+    button_camera.style.display = 'none';
     var cont = 0;
     var url = host + "criaocorrencia?";
     window.ocorrencia_titulo = document.getElementById('titulo').value;
@@ -195,6 +201,5 @@ function enviar() {
     };
 }
 
-function sucesso(){
-
+function sucesso() {
 }

@@ -77,6 +77,31 @@
 </div>
 <script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript" src="js/persistencia.js"></script>
+<script>
+    $(document).on( "click", ".show-page-loading-msg", function() {
+        var $this = $( this ),
+                theme = $this.jqmData( "theme" ) || $.mobile.loader.prototype.options.theme,
+                msgText = $this.jqmData( "msgtext" ) || $.mobile.loader.prototype.options.text,
+                textVisible = $this.jqmData( "textvisible" ) || $.mobile.loader.prototype.options.textVisible,
+                textonly = !!$this.jqmData( "textonly" );
+        html = $this.jqmData( "html" ) || "";
+        $.mobile.loading( 'show', {
+            text: msgText,
+            textVisible: textVisible,
+            theme: theme,
+            textonly: textonly,
+            html: html
+        });
+    })
+</script>
+<script>
+    function atualizaTelaFormulario(){
+        var button_enviar = document.getElementById('icone_gravar');
+        button_enviar.style.display = 'show';
+        var button_camera = document.getElementById('icone_camera');
+        button_camera.style.display = 'show';
+    }
+</script>
 <script type="text/javascript" src="js/index.js"></script>
 </body>
 </html>

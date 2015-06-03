@@ -14,28 +14,55 @@
     <script type="text/javascript" src="js/persistencia.js"></script>
     <script type="text/javascript"
             src="http://maps.google.com/maps/api/js?sensor=true&language=pt-BR"></script>
+    <script>
+        $(document).on("click", ".show-page-loading-msg", function () {
+            var $this = $(this),
+                    theme = $this.jqmData("theme") || $.mobile.loader.prototype.options.theme,
+                    msgText = $this.jqmData("msgtext") || $.mobile.loader.prototype.options.text,
+                    textVisible = $this.jqmData("textvisible") || $.mobile.loader.prototype.options.textVisible,
+                    textonly = !!$this.jqmData("textonly");
+            html = $this.jqmData("html") || "";
+            $.mobile.loading('show', {
+                text: msgText,
+                textVisible: textVisible,
+                theme: theme,
+                textonly: textonly,
+                html: html
+            });
+        })
+    </script>
 </head>
 <body>
 <div data-role="page" id="novo">
     <div data-role="header">
         <p align="center">
             <img src="img/logo.png">
+
         <p>
+
         <div data-role="navbar" id="menu">
             <ul>
-                <li><a href="index.html" data-role="button" data-icon=""><img src ="img/icone_home.png" /></a></li>
-                <li><a href="formulario.html" data-role="button" data-icon=""><img src ="img/icone_novo.png" /></a></li>
+                <li><a href="index.html" data-role="button" data-icon=""><img
+                        src="img/icone_home.png"/></a></li>
+                <li><a href="formulario.html" data-role="button" data-icon=""><img
+                        src="img/icone_novo.png"/></a></li>
             </ul>
         </div>
     </div>
 
     <button data-role="button" data-iconpos="button" id="icone_camera"
-            onclick="capturarFoto();"> <img src ="img/icone_camera.png" />
+            onclick="capturarFoto();"><img src="img/icone_camera.png"/>
     </button>
-    <button data-role="button" id="icone_gravar" onclick="enviar();">
-        <img src ="img/icone_gravar.png" />
-    </button><br><br>
+    <button data-role="button" id="icone_gravar"
+            onclick="enviar();"
+            class="show-page-loading-msg"
+            data-textvisible="true" data-msgtext="Enviando"
+            data-html="<span class='ui-bar ui-overlay-a ui-corner-all'>
+            <center><img src='img/carregando.gif' /><h2></h2></center></span>">
 
+        <img src="img/icone_gravar.png"/>
+    </button>
+    <br><br>
 
     <div data-role="formulario" class="ui-content" id="formulario">
         <form name="form_ocorrencia" action="#" id="ocorrencia">
@@ -46,13 +73,14 @@
 
                 <textarea name="ocorrencia_descricao" id="descricao"
                           placeholder="Informe uma descrição para o problema"
-                          data-role="descricao" ></textarea>
+                          data-role="descricao"></textarea>
                 <center>
                     <input type="image" id="imagem" src="" name="ocorrencia_foto"
                            style="width:200px;height:200px;"
                            alt="imagem">
                 </center>
-                <textarea name="ocorrencia_foto_text" id="input_foto" style="display: none"></textarea>
+                <textarea name="ocorrencia_foto_text" id="input_foto"
+                          style="display: none"></textarea>
                 <br/>
 
                 <label form="ocorrencia_latitude" class="ui-content"></label>
