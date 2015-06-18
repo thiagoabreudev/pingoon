@@ -165,11 +165,15 @@ function buscaOcorrenciasSucesso(tx, results) {
     document.getElementById(window.status).innerHTML = ocorrencia_html;
 }
 function enviar() {
+    //tirar se o envio não funcionar
+    document.getElementById('novo').style="background: rgba (255,255,255, 0.6); z-indx:1";
 //  Pegando os dados do formulario para enviar para o servidor
     var button_enviar = document.getElementById('icone_gravar');
     button_enviar.style.display = 'none';
     var button_camera = document.getElementById('icone_camera');
     button_camera.style.display = 'none';
+    var button_cancelar = document.getElementById('icone_cancelar');
+    button_cancelar.style.display = 'none';
     var cont = 0;
     var url = host + "criaocorrencia?";
     window.ocorrencia_titulo = document.getElementById('titulo').value;

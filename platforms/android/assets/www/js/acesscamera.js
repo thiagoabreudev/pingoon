@@ -9,6 +9,7 @@ function onDeviceReady(){
 }
 
 function fotoSucesso(imageData){
+    document.getElementById('imagem').type='image';
     var imagem = document.getElementById('imagem');
     var input_img = document.getElementById('input_foto');
     imagem.src = "data:image/jpeg;base64," + imageData;

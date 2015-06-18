@@ -6,9 +6,9 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/estilo.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/acesscamera.js"></script>
     <script type="text/javascript" src="js/persistencia.js"></script>
@@ -53,12 +53,19 @@
     <button data-role="button" data-iconpos="button" id="icone_camera"
             onclick="capturarFoto();"><img src="img/icone_camera.png"/>
     </button>
+
+    <a href="index.html">
+    <button data-role="button" data-iconpos="button" id="icone_cancelar"
+            onclick="" formaction="index.html" ><img src="img/icone_cancelar.png"/>
+    </button>
+    </a>
+
     <button data-role="button" id="icone_gravar"
             onclick="enviar();"
             class="show-page-loading-msg"
             data-textvisible="true" data-msgtext="Enviando"
             data-html="<span class='ui-bar ui-overlay-a ui-corner-all'>
-            <center><img src='img/carregando.gif' /><h2></h2></center></span>">
+            <center id='carregando'><img src='img/carregando.gif'  /><h2></h2></center></span>">
 
         <img src="img/icone_gravar.png"/>
     </button>
@@ -75,7 +82,7 @@
                           placeholder="Informe uma descrição para o problema"
                           data-role="descricao"></textarea>
                 <center>
-                    <input type="image" id="imagem" src="" name="ocorrencia_foto"
+                    <input type="hidden" id="imagem" src="" name="ocorrencia_foto"
                            style="width:200px;height:200px;"
                            alt="imagem">
                 </center>
