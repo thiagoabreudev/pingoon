@@ -3,8 +3,10 @@
  */
 
 var db;
+var host;
+var opcoes = { timeout: 3000 };
 //var host = '192.168.43.158:8081/';
-var host = 'http://52.25.81.7:8081/';
+//var host = 'http://52.25.81.7:8081/';
 //var host = 'http://192.168.0.105:8081/';
 //var host = 'http://192.168.2.2:8081/'; //Roteador pingoon
 document.addEventListener("deviceready", onDeviceReady, false);
@@ -12,7 +14,10 @@ document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
     db = window.openDatabase("pingoon", "1.0", "Pingoon", 200000);
     db.transaction(criaDB, erroDB, sucessoDB);
+    carregarCongiguracoes();
     totaisRegistros();
+    var opcoes = { timeout: 3000 };
+    watchID = navigator.geolocation.watchPosition(mapaSucesso, mapaErro, opcoes);
 }
 
 function criaDB(tx) {
@@ -26,6 +31,13 @@ function criaDB(tx) {
         'ocorrencia_longitude varchar(50), ' +
         'ocorrencia_id INTEGER, ' +
         'status varchar(1))');
+
+    var sqlConfiguracao = 'CREATE TABLE IF NOT EXISTS configuracao(id ' +
+                      'INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+                      'configuracao_ip varchar(15), ' +
+                      'configuracao_porta varchar(4))';
+
+    tx.executeSql(sqlConfiguracao)
 }
 
 function erroDB(tx, err) {
@@ -79,7 +91,7 @@ function registroSucesso(tx, results) {
 
 // Parte referente a comunicacao com o webservice e pedidos dos status das ocorrencias
 function recuperaServidor(ids) {
-    var url = host + "pesquisa";
+    var url = window.host + "pesquisa";
     url += "?ocorrencia_ids=" + ids + ';';
     var conexao = new XMLHttpRequest();
     conexao.open('GET', url, false);
@@ -175,7 +187,7 @@ function enviar() {
     var button_cancelar = document.getElementById('icone_cancelar');
     button_cancelar.style.display = 'none';
     var cont = 0;
-    var url = host + "criaocorrencia?";
+    var url = window.host + "criaocorrencia?";
     window.ocorrencia_titulo = document.getElementById('titulo').value;
     window.ocorrencia_descricao = document.getElementById('descricao').value;
     window.ocorrencia_foto = document.getElementById('input_foto').value;
@@ -206,4 +218,49 @@ function enviar() {
 }
 
 function sucesso() {
+}
+
+//Configuracoes
+
+function buttonSalvarConfig(){
+    window.hostConfig = document.getElementById('configuracao_ip').value;
+    window.portConfig = document.getElementById('configuracao_porta').value;
+    db.transaction(inserirDadosConfig, erroDB, sucessoSalvarConfiguracao);
+}
+
+
+function inserirDadosConfig(tx) {
+    var sql = "INSERT INTO configuracao(configuracao_ip, " +
+        "configuracao_porta)" +
+        "VALUES ('" + window.hostConfig + "'," +
+        "'" + window.portConfig + "')";
+    tx.executeSql(sql);
+}
+
+function carregarCongiguracoes() {
+    db.transaction(recuperaConfig, erroDB);
+}
+
+function recuperaConfig(tx) {
+    var sql = 'SELECT * FROM configuracao ORDER BY id DESC LIMIT 1';
+    tx.executeSql(sql, [], alimentaConfig, erroDB);
+}
+
+function alimentaConfig(tx, results) {
+//    T=(On)
+    var tamanho = results.rows.length;
+    window.hostConfig = "";
+    window.portConfig = "";
+    for (var i = 0; i < tamanho; i++) {
+        window.hostConfig = results.rows.item(i).configuracao_ip;
+        window.portConfig = results.rows.item(i).configuracao_porta;
+    }
+//    document.getElementById('configuracao_ip').value = window.hostConfig;
+//    document.getElementById('configuracao_porta').value = window.portConfig;
+    window.host = 'http://' + window.hostConfig + ':' + window.portConfig + '/';
+}
+
+function sucessoSalvarConfiguracao() {
+    alert("Configuração salva com sucesso!");
+    window.location = "index.html";
 }
