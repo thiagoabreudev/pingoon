@@ -1,21 +1,21 @@
 var longitude;
 var latitude;
 document.addEventListener("deviceready", onDeviceReady, false);
-var opcoes = { timeout: 3000 };
-watchID = navigator.geolocation.watchPosition(mapaSucesso, mapaErro, opcoes);
+var opcoes = { timeout: 30000 };
+var watchID;
 
 function onDeviceReady() {
-    var opcoes = { timeout: 3000 };
+//    var opcoes = { timeout: 3000 };
+//    watchID = navigator.geolocation.watchPosition(mapaSucesso, mapaErro, opcoes);
+}
+
+function capturaLocalizacao(){
     watchID = navigator.geolocation.watchPosition(mapaSucesso, mapaErro, opcoes);
 }
 
 function mapaSucesso(posicao) {
-    var longitude = document.getElementById('ocorrencia_longitude');
-    var latitude  = document.getElementById('ocorrencia_latitude');
-    longitude.value = posicao.coords.latitude;
-    latitude.value = posicao.coords.longitude;
-    window.vLatitude = posicao.coords.latitude;
-    window.vLongitude = posicao.coords.longitude;
+    latitude = posicao.coords.latitude;
+    longitude = posicao.coords.longitude;
 }
 
 function mapaErro(msg) {

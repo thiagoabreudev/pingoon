@@ -31,6 +31,11 @@
             });
         })
     </script>
+    <script>
+        $(document).on("click", ".hide-page-loading-msg", function () {
+            $.mobile.loading('hide');
+        })
+    </script>
 </head>
 <body>
 <div data-role="page" id="novo">
@@ -54,7 +59,6 @@
     <button data-role="button" data-iconpos="button" id="icone_camera"
             onclick="capturarFoto();"><img src="img/icone_camera.png"/>
     </button>
-
     <a href="index.html">
     <button data-role="button" data-iconpos="button" id="icone_cancelar"
             onclick="" formaction="index.html" ><img src="img/icone_cancelar.png"/>
@@ -66,7 +70,7 @@
             class="show-page-loading-msg"
             data-textvisible="true" data-msgtext="Enviando"
             data-html="<span class='ui-bar ui-overlay-a ui-corner-all'>
-            <center id='carregando'><img src='img/carregando.gif'  /><h2></h2></center></span>">
+            <center id='carregando'><img src='img/carregando.gif' id='carregando''  /><h2></h2></center></span>">
 
         <img src="img/icone_gravar.png"/>
     </button>
@@ -92,9 +96,9 @@
                 <br/>
 
                 <label form="ocorrencia_latitude" class="ui-content"></label>
-                <input type="hidden" id="ocorrencia_latitude" name="ocorrencia_latitude">
+                <input id="ocorrencia_latitude" name="ocorrencia_latitude">
                 <label form="ocorrencia_latitude" class="ui-content"></label>
-                <input type="hidden" id="ocorrencia_longitude" name="ocorrencia_longitude">
+                <input id="ocorrencia_longitude" name="ocorrencia_longitude">
 
             </fieldset>
         </form>

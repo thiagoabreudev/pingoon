@@ -4,11 +4,6 @@
 
 var db;
 var host;
-var opcoes = { timeout: 3000 };
-//var host = '192.168.43.158:8081/';
-//var host = 'http://52.25.81.7:8081/';
-//var host = 'http://192.168.0.105:8081/';
-//var host = 'http://192.168.2.2:8081/'; //Roteador pingoon
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
@@ -16,8 +11,7 @@ function onDeviceReady() {
     db.transaction(criaDB, erroDB, sucessoDB);
     carregarCongiguracoes();
     totaisRegistros();
-    var opcoes = { timeout: 3000 };
-    watchID = navigator.geolocation.watchPosition(mapaSucesso, mapaErro, opcoes);
+    capturaLocalizacao();
 }
 
 function criaDB(tx) {
@@ -33,9 +27,9 @@ function criaDB(tx) {
         'status varchar(1))');
 
     var sqlConfiguracao = 'CREATE TABLE IF NOT EXISTS configuracao(id ' +
-                      'INTEGER PRIMARY KEY AUTOINCREMENT, ' +
-                      'configuracao_ip varchar(15), ' +
-                      'configuracao_porta varchar(4))';
+        'INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+        'configuracao_ip varchar(15), ' +
+        'configuracao_porta varchar(4))';
 
     tx.executeSql(sqlConfiguracao)
 }
@@ -66,7 +60,9 @@ function inserirDados(tx) {
 }
 
 function sucessoSalvar() {
-    alert("Ocorrencia N°" + window.ocorrencia_id + " criada com sucesso");
+    var msg = "Ocorrencia N°" + window.ocorrencia_id + " criada com sucesso";
+    navigator.notification.alert(msg, function () {
+    }, 'Ocorrencia criada com sucesso', 'Fechar');
     window.location = "index.html";
 }
 
@@ -83,11 +79,9 @@ function registroSucesso(tx, results) {
     var tamanho = results.rows.length;
     for (var i = 0; i < tamanho; i++) {
         pesquisaOcoIds[i] = results.rows.item(i).ocorrencia_id;
-//        alert(results.rows.item(i).ocorrencia_id);
     }
     recuperaServidor(pesquisaOcoIds);
 }
-
 
 // Parte referente a comunicacao com o webservice e pedidos dos status das ocorrencias
 function recuperaServidor(ids) {
@@ -178,8 +172,10 @@ function buscaOcorrenciasSucesso(tx, results) {
 }
 function enviar() {
     //tirar se o envio não funcionar
-    document.getElementById('novo').style="background: rgba (255,255,255, 0.6); z-indx:1";
-//  Pegando os dados do formulario para enviar para o servidor
+
+    //Capturar localizacao
+    document.getElementById('novo').style = "background: rgba (255,255,255, 0.6); z-indx:1";
+    //  Pegando os dados do formulario para enviar para o servidor
     var button_enviar = document.getElementById('icone_gravar');
     button_enviar.style.display = 'none';
     var button_camera = document.getElementById('icone_camera');
@@ -195,26 +191,32 @@ function enviar() {
     window.ocorrencia_latitude = document.getElementById('ocorrencia_latitude').value;
     url = url + "ocorrencia_titulo=" + ocorrencia_titulo + ";";
     url = url + "ocorrencia_descricao=" + ocorrencia_descricao + ";";
-    url = url + "ocorrencia_longitude=" + ocorrencia_longitude + ";";
-    url = url + "ocorrencia_latitude=" + ocorrencia_latitude + ";";
+    url = url + "ocorrencia_longitude=" + longitude + ";";
+    url = url + "ocorrencia_latitude=" + latitude + ";";
     url = url + "ocorrencia_foto=" + ocorrencia_foto;
-//  Conecta com o servidor
-
-    var formulario = document.getElementById('formulario');
-    var f = new FormData();
-    var conexao = new XMLHttpRequest();
-    conexao.open("POST", url, true);
-    conexao.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    conexao.send(f);
-//  Valida mensagem de retorno
-    conexao.onreadystatechange = function () {
-        if (conexao.status == 200 && conexao.responseText != "" && cont == 0) {
-            cont = cont + 1;
-            db.transaction(inserirDados, erroDB, sucessoSalvar);
-            var resposta = jQuery.parseJSON(conexao.responseText);
-            window.ocorrencia_id = resposta.id;
-        }
-    };
+    //  Conecta com o servidor
+    if (latitude == null || longitude == null) {
+        var msg = "Não foi possivel recuperar a localização, verifique se o GPS esta ativo!";
+        navigator.notification.alert(msg, function () {
+        }, "Localização", 'Fechar');
+        window.location = "index.html";
+    } else {
+        var formulario = document.getElementById('formulario');
+        var f = new FormData();
+        var conexao = new XMLHttpRequest();
+        conexao.open("POST", url, true);
+        conexao.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        conexao.send(f);
+        //  Valida mensagem de retorno
+        conexao.onreadystatechange = function () {
+            if (conexao.status == 200 && conexao.responseText != "" && cont == 0) {
+                cont = cont + 1;
+                db.transaction(inserirDados, erroDB, sucessoSalvar);
+                var resposta = jQuery.parseJSON(conexao.responseText);
+                window.ocorrencia_id = resposta.id;
+            }
+        };
+    }
 }
 
 function sucesso() {
@@ -222,7 +224,7 @@ function sucesso() {
 
 //Configuracoes
 
-function buttonSalvarConfig(){
+function buttonSalvarConfig() {
     window.hostConfig = document.getElementById('configuracao_ip').value;
     window.portConfig = document.getElementById('configuracao_porta').value;
     db.transaction(inserirDadosConfig, erroDB, sucessoSalvarConfiguracao);

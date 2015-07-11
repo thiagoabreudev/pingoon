@@ -111,6 +111,20 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/cordova-plugin-dialogs/www/notification.js",
+        "id": "cordova-plugin-dialogs.notification",
+        "merges": [
+            "navigator.notification"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-dialogs/www/android/notification.js",
+        "id": "cordova-plugin-dialogs.notification_android",
+        "merges": [
+            "navigator.notification"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.file/www/DirectoryEntry.js",
         "id": "org.apache.cordova.file.DirectoryEntry",
         "clobbers": [
@@ -268,6 +282,7 @@ module.exports.metadata =
     "org.apache.cordova.console": "0.2.13",
     "org.apache.cordova.geolocation": "0.3.12",
     "io.litehelpers.cordova.sqlite": "0.7.8-dev",
+    "cordova-plugin-dialogs": "1.1.1",
     "org.apache.cordova.file": "1.3.3"
 }
 // BOTTOM OF METADATA
