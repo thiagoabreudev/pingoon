@@ -11,7 +11,7 @@ function onDeviceReady() {
     db.transaction(criaDB, erroDB, sucessoDB);
     carregarCongiguracoes();
     totaisRegistros();
-    capturaLocalizacao();
+//    capturaLocalizacao();
 }
 
 function criaDB(tx) {

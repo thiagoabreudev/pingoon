@@ -55,14 +55,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "org.apache.cordova.geolocation": {
-        "source": {
-            "type": "registry",
-            "id": "org.apache.cordova.geolocation"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "io.litehelpers.cordova.sqlite": {
         "source": {
             "type": "git",
@@ -76,6 +68,14 @@
         "source": {
             "type": "registry",
             "id": "cordova-plugin-dialogs"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-geolocation": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-geolocation"
         },
         "is_top_level": true,
         "variables": {}
